@@ -92,7 +92,7 @@ location ^~ /restricted_area/ {
     # Structure of the message to be verified: here, the hash is computed from
     # the URI (with the query string), the request body, the remote username
     # (passed by Basic auth), the timestamp and the expiration time
-    hmac_access_message "$uri|$body|$remote_user|$arg_ts|$arg_e";
+    hmac_access_message "$uri|$request_body|$remote_user|$arg_ts|$arg_e";
 
     # The hash includes the request body so this variable must be set to on
     # to have the module read the request body in time to compute the hash
@@ -137,7 +137,7 @@ BODY="Hello world!"
 ST="$URL|$TIME_STAMP|$EXPIRES"
 TOKEN="$(echo -n $ST | openssl dgst -sha256 -hmac $SECRET -binary | openssl base64 | tr +/ -_ | tr -d =)"
 
-echo "http://{$USER}@example.com{$URL}?h={$TOKEN}&ts={$TIMESTAMP}&e={$EXPIRES}" -d "$BODY" -H "Content-Type: application/octet-stream"
+echo "http://$USER@example.com$URL?h=$TOKEN&ts=$TIMESTAMP&e=$EXPIRES" -d "$BODY" -H "Content-Type: application/octet-stream"
 ```
 
 Note that the `ts`, `h`, and `e` arguments in the query string are accessed
