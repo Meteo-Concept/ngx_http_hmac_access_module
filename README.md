@@ -48,6 +48,23 @@ Build Nginx
     make install
 
 
+Tests:
+------
+
+A few tests are included in tests/hmac_access.t. The format is the same as the
+main nginx test suite at https://github.com/nginx/nginx-tests.
+
+Assuming you're in a directory where nginx/ is where you've compiled nginx and
+ngx_http_hmac_access_module/ is where the module resides, testing the plugin
+works this way:
+```sh
+git clone https://github.com/nginx/nginx-tests
+cd nginx-tests
+cp ../ngx_http_hmac_access_module/tests/hmac_access.t
+prove hmac_access.t
+```
+
+
 Usage:
 ======
 
@@ -182,9 +199,15 @@ Nginx might not populate the `$request_body` variable if it's very large (i.e.
 cannot be loaded in memory). In that case, SSL/TLS with client authentication
 should be used instead.
 
+Changelog
+=========
 
-Credits:
-========
+v1 : Initial version
+
+Tested with nginx 1.22.
+
+Credits
+=======
 
 This plugin is based on the Nginx HMAC Secure Link Module, by Denis Denisov
 (https://github.com/nginx-modules/ngx_http_hmac_secure_link_module). Many
